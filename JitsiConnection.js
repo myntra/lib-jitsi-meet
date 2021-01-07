@@ -17,11 +17,11 @@ import {
  * the server.
  * @constructor
  */
-export default function JitsiConnection(appID, token, options) {
+export default function JitsiConnection(appID, token, options, myntraHttpClient) {
     this.appID = appID;
     this.token = token;
     this.options = options;
-    this.xmpp = new XMPP(options, token);
+    this.xmpp = new XMPP(options, token, myntraHttpClient);
 
     /* eslint-disable max-params */
     this.addEventListener(JitsiConnectionEvents.CONNECTION_FAILED,

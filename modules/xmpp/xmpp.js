@@ -34,7 +34,7 @@ const logger = getLogger(__filename);
  * @param {number} [options.websocketKeepAlive] - See {@link XmppConnection} constructor.
  * @returns {XmppConnection}
  */
-function createConnection({ enableWebsocketResume, serviceUrl = '/http-bind', token, websocketKeepAlive }) {
+function createConnection({ enableWebsocketResume, serviceUrl = '/http-bind', token, websocketKeepAlive, myntraHttpClient }) {
     // Append token as URL param
     if (token) {
         // eslint-disable-next-line no-param-reassign
@@ -44,7 +44,8 @@ function createConnection({ enableWebsocketResume, serviceUrl = '/http-bind', to
     return new XmppConnection({
         enableWebsocketResume,
         serviceUrl,
-        websocketKeepAlive
+        websocketKeepAlive,
+        myntraHttpClient
     });
 }
 
@@ -94,7 +95,7 @@ export default class XMPP extends Listenable {
      * @param {Array<Object>} options.p2pStunServers see {@link JingleConnectionPlugin} for more details.
      * @param token
      */
-    constructor(options, token) {
+    constructor(options, token, myntraHttpClient) {
         super();
         this.connection = null;
         this.disconnectInProgress = false;
@@ -111,7 +112,8 @@ export default class XMPP extends Listenable {
             // FIXME remove deprecated bosh option at some point
             serviceUrl: options.serviceUrl || options.bosh,
             token,
-            websocketKeepAlive: options.websocketKeepAlive
+            websocketKeepAlive: options.websocketKeepAlive,
+            myntraHttpClient
         });
 
         this._initStrophePlugins();

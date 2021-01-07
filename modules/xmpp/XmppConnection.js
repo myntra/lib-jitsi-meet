@@ -46,14 +46,14 @@ export default class XmppConnection extends Listenable {
      * jitterDelay = (interval * 0.2) + (0.8 * interval * Math.random())
      * The keep alive is HTTP GET request to the {@link options.serviceUrl}.
      */
-    constructor({ enableWebsocketResume, websocketKeepAlive, serviceUrl }) {
+    constructor({ enableWebsocketResume, websocketKeepAlive, serviceUrl, myntraHttpClient }) {
         super();
         this._options = {
             enableWebsocketResume: typeof enableWebsocketResume === 'undefined' ? true : enableWebsocketResume,
             websocketKeepAlive: typeof websocketKeepAlive === 'undefined' ? 4 * 60 * 1000 : Number(websocketKeepAlive)
         };
 
-        this._stropheConn = new Strophe.Connection(serviceUrl);
+        this._stropheConn = new Strophe.Connection(myntraHttpClient, serviceUrl);
         this._usesWebsocket = serviceUrl.startsWith('ws:') || serviceUrl.startsWith('wss:');
 
         // The default maxRetries is 5, which is too long.
