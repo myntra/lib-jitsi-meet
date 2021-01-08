@@ -2,3 +2,7 @@
 	path = strophejs
 	url = https://github.com/myntra/strophejs
 	branch = knuth_changes
+[submodule "strophejstest"]
+	path = strophejstest
+	url = https://github.com/myntra/strophejs
+	branch = knuth_changes
