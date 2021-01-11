@@ -1,4 +1,0 @@
-[submodule "strophejs"]
-	path = strophejs
-	url = https://github.com/myntra/strophejs
-	branch = knuth_changes
