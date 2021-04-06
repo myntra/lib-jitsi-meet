@@ -153,6 +153,7 @@ class ConnectionAvgStats {
         this._avgEnd2EndRTT = undefined;
 
         this._onConnectionStats = (tpc, stats) => {
+            console.log('========= _onConnectionStats')
             if (this.isP2P === tpc.isP2P) {
                 this._calculateAvgStats(stats);
             }
@@ -576,7 +577,7 @@ export default class AvgRTPStatsReporter {
      * @private
      */
     _calculateAvgStats(data) {
-
+        console.log('========= _calculateAvgStats')
         if (!data) {
             logger.error('No stats');
 
@@ -586,6 +587,7 @@ export default class AvgRTPStatsReporter {
         const isP2P = this._conference.isP2PActive();
         const confSize = this._conference.getParticipantCount();
 
+        // Comment below if
         if (!isP2P && confSize < 2) {
 
             // There's no point in collecting stats for a JVB conference of 1.
@@ -645,7 +647,7 @@ export default class AvgRTPStatsReporter {
         this._avgPacketLossTotal.addNext(packetLoss.total);
 
         this._avgCQ.addNext(data.connectionQuality);
-
+        console.log('========= connectionQuality-2 = ', data.connectionQuality)
         if (frameRate) {
             this._avgRemoteFPS.addNext(
                 this._calculateAvgVideoFps(

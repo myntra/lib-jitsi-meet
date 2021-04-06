@@ -22,7 +22,7 @@ export default function JitsiConnection(appID, token, options, myntraHttpClient)
     this.token = token;
     this.options = options;
     this.xmpp = new XMPP(options, token, myntraHttpClient);
-
+    console.log('========== swetank4')
     /* eslint-disable max-params */
     this.addEventListener(JitsiConnectionEvents.CONNECTION_FAILED,
         (errType, msg, credentials, details) => {

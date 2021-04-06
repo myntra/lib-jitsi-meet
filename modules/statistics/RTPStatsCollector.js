@@ -483,6 +483,7 @@ StatsCollector.prototype.getNonNegativeStat = function(report, name) {
  * Stats processing logic.
  */
 StatsCollector.prototype.processStatsReport = function() {
+    console.log('======= processStatsReport')
     if (!this.previousStatsReport) {
         return;
     }
@@ -877,7 +878,7 @@ StatsCollector.prototype._processAndEmitReport = function() {
         }
     });
     this.audioLevelReportHistory = {};
-
+    console.log('======== eventEmitter = ',this.conferenceStats.bandwidth)
     this.eventEmitter.emit(
         StatisticsEvents.CONNECTION_STATS,
         this.peerconnection,
@@ -1058,6 +1059,7 @@ StatsCollector.prototype.getNonNegativeValue = function(v) {
  * @private
  */
 StatsCollector.prototype._calculateBitrate = function(now, before, fieldName) {
+    console.log('======= _calculateBitrate')
     const bytesNow = this.getNonNegativeValue(now[fieldName]);
     const bytesBefore = this.getNonNegativeValue(before[fieldName]);
     const bytesProcessed = Math.max(0, bytesNow - bytesBefore);
@@ -1094,7 +1096,7 @@ StatsCollector.prototype.processNewStatsReport = function() {
 
             const availableIncomingBitrate = now.availableIncomingBitrate;
             const availableOutgoingBitrate = now.availableOutgoingBitrate;
-
+            console.log('======== this.conferenceStats.bandwidth = ',this.conferenceStats.bandwidth)
             if (availableIncomingBitrate || availableOutgoingBitrate) {
                 this.conferenceStats.bandwidth = {
                     'download': Math.round(availableIncomingBitrate / 1000),
@@ -1129,6 +1131,7 @@ StatsCollector.prototype.processNewStatsReport = function() {
                             t.ip === ip
                             && t.type === type
                             && t.localip === localIp)) {
+                    console.log('========== networkType-1 = ', ocalUsedCandidate.networkType)
                     conferenceStatsTransport.push({
                         ip,
                         type,
@@ -1190,7 +1193,7 @@ StatsCollector.prototype.processNewStatsReport = function() {
                 packetsLost: packetsLostDiff,
                 isDownloadStream
             });
-
+            console.log('========== Adding bitrates')
             if (now.type === 'inbound-rtp') {
 
                 ssrcStats.addBitrate({

@@ -86,6 +86,7 @@ let videoBitrateCap = null;
  * video started.
  */
 function getTarget(simulcast, resolution, millisSinceStart) {
+    console.log('======= getTarget')
     // Completely ignore the bitrate in the first 5 seconds, as the first
     // event seems to fire very early and the value is suspicious and causes
     // false positives.
@@ -374,6 +375,7 @@ export default class ConnectionQuality {
             } else {
                 quality = 0; // Still 1 bar, but slower climb-up.
             }
+            console.log('======== quality = ',quality)
         } else {
             // Calculate a value based on the sending bitrate.
 
@@ -419,6 +421,7 @@ export default class ConnectionQuality {
             if (packetLoss && packetLoss >= 10) {
                 quality = Math.min(quality, 30);
             }
+            console.log('======== quality2 = ',quality)
         }
 
         // Make sure that the quality doesn't climb quickly
@@ -435,7 +438,7 @@ export default class ConnectionQuality {
                     prevConnectionQuality
                         + (diffSeconds * maxIncreasePerSecond));
         }
-
+        console.log('========= connectionQuality-6 = ', quality)
         return Math.min(100, quality);
     }
 
@@ -446,6 +449,7 @@ export default class ConnectionQuality {
     _updateLocalConnectionQuality(value) {
         this._localStats.connectionQuality = value;
         this._lastConnectionQualityUpdate = window.performance.now();
+        console.log('========= connectionQuality-5 = ', value)
     }
 
     /**
@@ -463,7 +467,7 @@ export default class ConnectionQuality {
             maxEnabledResolution: this._localStats.maxEnabledResolution,
             avgAudioLevels: this._localStats.localAvgAudioLevels
         };
-
+        console.log('========= connectionQuality-4 = ', this._localStats.connectionQuality)
         try {
             this._conference.broadcastEndpointMessage({
                 type: STATS_MESSAGE_TYPE,
@@ -488,6 +492,7 @@ export default class ConnectionQuality {
      * @param data new statistics
      */
     _updateLocalStats(tpc, data) {
+        console.log('========= _updateLocalStats')
         // Update jvbRTT
         if (!tpc.isP2P) {
             const jvbRTT
@@ -498,7 +503,7 @@ export default class ConnectionQuality {
         }
 
         // Do not continue with processing of other stats if they do not
-        // originate from the active peerconnection
+        // originate from the active peerconnection // comment below if
         if (tpc !== this._conference.getActivePeerConnection()) {
             return;
         }
@@ -533,7 +538,7 @@ export default class ConnectionQuality {
                     isMuted,
                     resolution));
         }
-
+        console.log('========= connectionQuality-31 = ', this._localStats)
         this.eventEmitter.emit(
             ConnectionQualityEvents.LOCAL_STATS_UPDATED,
             this._localStats);
@@ -556,7 +561,7 @@ export default class ConnectionQuality {
             maxEnabledResolution: data.maxEnabledResolution,
             avgAudioLevels: data.avgAudioLevels
         };
-
+        console.log('========= connectionQuality-3 = ', data.connectionQuality)
         this.eventEmitter.emit(
             ConnectionQualityEvents.REMOTE_STATS_UPDATED,
             id,
